@@ -1,92 +1,61 @@
 grammar compiladores;
 
-@header {
-package compiladores;
-}
+@header { package compiladores; }
 
-fragment LETRA : [A-Za-z] ;
-fragment DIGITO : [0-9] ;
+fragment LETRA:[A-Za-z];
+fragment DIGITO: [0-9];
 
-PYC : ';' ;
-PA  : '(' ;
-PC  : ')' ;
-LLA : '{' ;
-LLC : '}' ;
-ASIGN : '=' ;
-COMA  : ',' ;
-SUMA  : '+' ;
-RESTA : '-' ;
-MULT  : '*' ;
-DIV   : '/' ;
-MOD   : '%' ;
-EQ : '==' ;
+PYC: ';';
+PA: '(';
+PC: ')';
+LLA: '{';
+LLC: '}';
+ASIGN: '=';
+COMA: ',';
+SUMA: '+';
+RESTA: '-';
+MULT: '';
+DIV: '/';
+MOD: '%';
+EQ: '==';
 
-NUMERO : DIGITO+ ;
-// OTRO : . ;
+NUMERO: DIGITO+;
+INT: 'int';
+ID: (LETRA | '') (LETRA | DIGITO | '');
 
-INT : 'int' ;
+WS: [ \t\n\r] -> skip;
 
-ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
+programa: instrucciones EOF;
 
-WS : [ \t\n\r] -> skip ;
+instrucciones: instruccion instrucciones |;
 
-// s : ID     { System.out.println("ID ->" + $ID.getText() + "<--"); }         s
-//   | NUMERO { System.out.println("NUMERO ->" + $NUMERO.getText() + "<--"); } s
-//   | OTRO   { System.out.println("Otro ->" + $OTRO.getText() + "<--"); }     s
-//   | EOF
-//   ;
+instruccion: asignacion | declaracion | bloque;
 
-// si : s
-//    | EOF
-//    ;
+bloque: LLA instrucciones LLC;
 
-// s : PA s PC s
-//   |
-//   ;
+asignacion: ID ASIGN expresion PYC | error_falta_pyc;
 
-programa : instrucciones EOF ;
+declaracion:
+    INT ID inicializacion listaid PYC
+    | error_lista_decl;
 
-instrucciones : instruccion instrucciones
-              |
-              ;
+inicializacion: ASIGN NUMERO |;
 
-instruccion : asignacion
-            | declaracion
-            | bloque
-            ;
+listaid: COMA ID inicializacion listaid |;
 
-bloque : LLA instrucciones LLC ;
+expresion: termino exp;
 
-asignacion : ID ASIGN expresion PYC;
+exp: SUMA termino exp | RESTA termino exp |;
 
-declaracion : INT ID inicializacion listaid PYC ;
+termino: factor term;
 
-inicializacion : ASIGN NUMERO
-               |
-               ;
+term: MULT factor term | DIV factor term | MOD factor term |;
 
-listaid : COMA ID inicializacion listaid
-        |
-        ;
+factor: NUMERO | ID | PA expresion PC | error_falta_par;
 
-// X = ( 3 + 5 ) / 4; // ID ASSIGN expresion PYC
-
-expresion : termino exp ;
-
-exp : SUMA  termino exp
-    | RESTA termino exp
-    |
-    ;
-
-termino : factor term ;
-
-term : MULT factor term
-     | DIV  factor term
-     | MOD  factor term
-     |
-     ;
-
-factor : NUMERO
-       | ID
-       | PA expresion PC 
-       ;
+error_falta_pyc:
+    instruccion -> fail["Falta de un punto y coma"];
+error_falta_par:
+    PA expresion -> fail["Falta de apertura de paréntesis"];
+error_lista_decl:
+    declaracion listaid COMA -> fail["Formato incorrecto en lista de declaración de variables"];
