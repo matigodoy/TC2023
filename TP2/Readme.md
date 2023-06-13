@@ -1,53 +1,22 @@
-**[Informe]{.underline}**
+# Trabajo Práctico 2
 
-Trabajo Práctico 1
+## Contexto
 
-Integrantes:
+En el marco de la asignatura "Técnicas de Compilación" de la carrera de Ingeniería Informática, se ha desarrollado un analizador sintáctico y semántico para el lenguaje de programación C. El objetivo del trabajo fue construir un sistema que, dada una entrada de código en lenguaje C, genere como salida el Árbol Sintáctico y la Tabla de Símbolos de cada contexto, y que sea capaz de detectar y reportar varios errores comunes de programación.
 
--   Darre, Juan Cruz
+## Requisito
 
--   Godoy Cabrera, Lucas Matias
+Se nos solicitó crear un analizador sintáctico de tal forma que pueda reconocer errores de sintaxis tan simples como el de la carencia de un punto y coma, como de errores más groseros como la falta de declaración de una variable. Todo esto siguiendo el repositorio provisto por el profesor Eschoyez Maximiliano y en Java.
 
-Profesor:
+## Solución Propuesta
 
--   Eschoyez, Maximiliano
+Para abordar esta problemática, se ha utilizado ANTLR, una poderosa herramienta para la generación de parsers, junto con el lenguaje de programación Java. El primer paso en el desarrollo de la solución fue la creación de una gramática ANTLR para el lenguaje C. En esta gramática se definieron varias reglas de producción para describir la sintaxis del lenguaje C y para detectar errores sintácticos específicos.
 
-Materia:
+## Conclusión
 
--   Técnicas de Compilación
+A través de la implementación de este analizador sintáctico y semántico, se ha desarrollado una herramienta valiosa para el análisis de código en lenguaje C. Este trabajo ha demostrado la utilidad de ANTLR y Java en la creación de este tipo de herramientas y ha proporcionado una sólida base sobre la cual se pueden añadir funcionalidades adicionales en el futuro. Así mismo, ha permitido una comprensión más profunda de los principios y técnicas subyacentes en la compilación de lenguajes de programación.
 
-**Introducción:**
+## Integrantes
 
-En el presente informe se describirá la problemática abordada en el
-trabajo práctico de la materia TC, así como el desarrollo de la solución
-propuesta y una conclusión.
-
-El objetivo principal fue implementar un parser utilizando ANTLR para
-generar el Árbol Sintáctico de un archivo de entrada en lenguaje C. Este
-debía cumplir con requisitos específicos, como el reconocimiento de
-bloques de código, verificación de declaraciones y asignaciones,
-operaciones aritméticas y estructuras de control, entre otros.
-
-**Desarrollo de la solución:**
-
-Para abordar la problemática planteada, se definió una gramática que
-describía la sintaxis del lenguaje C, incluyendo las reglas necesarias
-para el reconocimiento de bloques de código, declaraciones,
-asignaciones, operaciones aritméticas y estructuras de control.
-
-La gramática se dividió en varias reglas, cada una de las cuales se
-encargaba de reconocer una construcción sintáctica específica del
-lenguaje C. Por ejemplo, se definieron reglas para reconocer
-instrucciones como asignaciones, declaraciones, llamadas a funciones,
-estructuras de control if, for y while, entre otros.
-
-Este funcionaba con un archivo de entrada como el "entrada.txt" en el
-cual uno podría introducir un código C para que compiladores.g4 lo
-interprete y luego el Caminante nos devuelva una síntesis del análisis.
-
-**Conclusión:**
-
-En resumen, el desarrollo de un parser utilizando ANTLR fue una solución
-efectiva para cumplir con los requisitos establecidos en la consigna del
-trabajo práctico, lo que demuestra su eficacia en el análisis sintáctico
-de programas escritos en lenguaje C.
+- Darré, Juan Cruz
+- Godoy Cabrera, Lucas Matias
