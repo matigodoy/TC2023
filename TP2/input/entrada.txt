@@ -1,2 +1,11 @@
-probando 123 probando
-3 palabras
+int main() {
+    // Este es un código de prueba
+    int x = 0;
+    int y = 2;
+    int z = 3;
+    int resultado;
+
+    resultado = (x + z) * y;
+
+    return 0;
+}
