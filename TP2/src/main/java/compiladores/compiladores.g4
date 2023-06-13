@@ -1,82 +1,12 @@
-grammar Compiladores;
+grammar compiladores;
 
-programa : instrucciones EOF ;
+@header {
+package compiladores;
+}
 
-instrucciones : instruccion instrucciones
-              |
-              ;
+fragment LETRA : [A-Za-z] ;
+fragment DIGITO : [0-9] ;
 
-instruccion : asignacion
-            | declaracion
-            | bloque
-            | condicion
-            | bucle
-            | llamadaFunc PYC
-            | retorno PYC
-            ;
-
-bloque : LLA instrucciones LLC ;
-
-asignacion : ID ASIGN expresion PYC;
-
-declaracion : tipo ID inicializacion listaid PYC
-            | tipo ID PA argumentos PC bloque
-            ;
-
-tipo : INT
-     | VOID
-     ;
-
-inicializacion : ASIGN expresion
-               |
-               ;
-
-listaid : COMA ID inicializacion listaid
-        |
-        ;
-
-condicion : IF PA condicion_expr PC bloque (ELSE bloque)?
-          ;
-
-bucle : FOR PA inicializacion PYC condicion_expr PYC asignacion PC bloque
-      | WHILE PA condicion_expr PC bloque
-      ;
-
-llamadaFunc : ID PA argumentos_llamada PC ;
-
-argumentos_llamada : expresion listaid
-                   |
-                   ;
-
-argumentos : tipo ID listaid
-           |
-           ;
-
-retorno : RETURN expresion?
-
-expresion : condicion_expr
-          | termino expresion_aux ;  
-
-condicion_expr : expresion (EQ | NEQ | LTE | GTE | LT | GT) expresion
-               | termino
-               ;
-
-expresion_aux : (SUMA | RESTA) termino expresion_aux
-              |
-              ;
-
-termino : factor termino_aux ;
-
-termino_aux : (MULT | DIV | MOD) factor termino_aux
-            |
-            ;
-
-factor : NUMERO
-       | ID
-       | PA expresion PC
-       ;
-
-// Tokens
 PYC : ';' ;
 PA  : '(' ;
 PC  : ')' ;
@@ -90,21 +20,73 @@ MULT  : '*' ;
 DIV   : '/' ;
 MOD   : '%' ;
 EQ : '==' ;
-NEQ : '!=' ;
-LTE : '<=' ;
-GTE : '>=' ;
-LT  : '<' ;
-GT  : '>' ;
-IF  : 'if' ;
-ELSE: 'else' ;
-FOR : 'for' ;
-WHILE: 'while' ;
-RETURN: 'return' ;
+
 NUMERO : DIGITO+ ;
+// OTRO : . ;
+
 INT : 'int' ;
-VOID: 'void' ;
+
 ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
+
 WS : [ \t\n\r] -> skip ;
 
-fragment LETRA : [A-Za-z] ;
-fragment DIGITO : [0-9] ;
+// s : ID     { System.out.println("ID ->" + $ID.getText() + "<--"); }         s
+//   | NUMERO { System.out.println("NUMERO ->" + $NUMERO.getText() + "<--"); } s
+//   | OTRO   { System.out.println("Otro ->" + $OTRO.getText() + "<--"); }     s
+//   | EOF
+//   ;
+
+// si : s
+//    | EOF
+//    ;
+
+// s : PA s PC s
+//   |
+//   ;
+
+programa : instrucciones EOF ;
+
+instrucciones : instruccion instrucciones
+              |
+              ;
+
+instruccion : asignacion
+            | declaracion
+            | bloque
+            ;
+
+bloque : LLA instrucciones LLC ;
+
+asignacion : ID ASIGN expresion PYC;
+
+declaracion : INT ID inicializacion listaid PYC ;
+
+inicializacion : ASIGN NUMERO
+               |
+               ;
+
+listaid : COMA ID inicializacion listaid
+        |
+        ;
+
+// X = ( 3 + 5 ) / 4; // ID ASSIGN expresion PYC
+
+expresion : termino exp ;
+
+exp : SUMA  termino exp
+    | RESTA termino exp
+    |
+    ;
+
+termino : factor term ;
+
+term : MULT factor term
+     | DIV  factor term
+     | MOD  factor term
+     |
+     ;
+
+factor : NUMERO
+       | ID
+       | PA expresion PC 
+       ;
